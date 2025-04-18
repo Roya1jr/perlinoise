@@ -21,10 +21,9 @@
 		"tailwindcss-animated": "^2.0.0"
 	},
 	"scripts": {
-		"build": "mkdir -p dist && cp ./src/index.html ./docs/ && bun build:script && tailwindcss -i ./input.css -o ./docs/style.css  --minify",
+		"build": "cp ./src/index.html ./docs/ && bun build:script && bun tailwind:script",
 		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
-		"tailwind": "tailwindcss -i ./input.css -o ./docs/style.css  --minify ",
-		"copy-html": "cp index.html dist/",
-		"watch": "tailwindcss -i ./src/style.css -o ./docs/style.css --watch"
+		"tailwind:script": "tailwindcss -i ./input.css -o ./docs/style.css  --minify ",
+		"watch": "tailwindcss -i ./input.css -o ./docs/style.css --watch"
 	}
 }

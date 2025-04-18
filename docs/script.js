@@ -1,5 +1,4 @@
 // src/script.ts
-var script_default = undefined;
-export {
-  script_default as default
-};
+var generateButton = document.getElementById("generateButton");
+var audioPlayer = document.getElementById("audioPlayer");
+var buttonContainer = document.getElementById("buttonContainer");
