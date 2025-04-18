@@ -1,0 +1,30 @@
+{
+	"name": "perlinoise",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest",
+		"@iconify/json": "^2.2.314",
+		"@iconify/tailwind4": "^1.0.6",
+		"daisyui": "^5.0.0",
+		"tailwindcss-animated": "2.0.0",
+		"tailwindcss": "4.1.4"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"dependencies": {
+		"@iconify/json": "^2.2.329",
+		"@iconify/tailwind4": "^1.0.6",
+		"daisyui": "^5.0.27",
+		"tailwindcss-animated": "^2.0.0"
+	},
+	"scripts": {
+		"build": "mkdir -p dist && cp ./src/index.html ./docs/ && bun build:script && tailwindcss -i ./input.css -o ./docs/style.css  --minify",
+		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
+		"tailwind": "tailwindcss -i ./input.css -o ./docs/style.css  --minify ",
+		"copy-html": "cp index.html dist/",
+		"watch": "tailwindcss -i ./src/style.css -o ./docs/style.css --watch"
+	}
+}

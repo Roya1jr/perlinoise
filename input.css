@@ -1,0 +1,14 @@
+
+@import "tailwindcss";
+
+@source "./src/*.{html,js,templ}";
+
+
+@plugin "tailwindcss-animated";
+
+@plugin "daisyui"{
+  /* biome-ignore lint/correctness/noUnknownProperty: customization */
+  themes: light --default, dark --prefersdark, coffee, night;
+}
+
+@plugin "@iconify/tailwind4";
