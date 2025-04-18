@@ -1,4 +1,4 @@
-# Perlinoise - Interactive Perlin Noise Generator
+# Perlin Noise Generator
 
 Generates audio Perlin noise in your browser.
 
