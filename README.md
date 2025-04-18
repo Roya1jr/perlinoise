@@ -1,4 +1,4 @@
-# Perlin Noise Generator
+# Perlin Noise Audio Generator
 
 Generates audio Perlin noise in your browser.
 
