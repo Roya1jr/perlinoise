@@ -1,0 +1,32 @@
+name: Build with npm
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🔨 Build with npm
+        run: npm run npm:build
+
+      - name: 📤 Upload dist folder
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: docs/
