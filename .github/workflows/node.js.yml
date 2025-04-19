@@ -1,32 +1,39 @@
-name: Build with npm
+name: Generate Documentation
 
 on:
   push:
-    branches: [main]
+    branches: [ main, master ]
   pull_request:
-    branches: [main]
+    branches: [ main, master ]
+  # Allow manual trigger from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: 📥 Checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: 🟢 Use Node.js
+      
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '23'
-
-      - name: 📦 Install dependencies
-        run: npm install
-
-      - name: 🔨 Build with npm
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Create docs directory if it doesn't exist
+        run: mkdir -p docs
+      
+      - name: Build documentation
         run: npm run npm:build
-
-      - name: 📤 Upload dist folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: docs/
+      
+      - name: Commit and push if changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A docs/
+          git diff --staged --quiet || (git commit -m "Update documentation" && git push)
