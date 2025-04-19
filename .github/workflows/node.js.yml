@@ -1,39 +1,38 @@
-name: Generate Documentation
+name: Build and Deploy with Bun
 
 on:
   push:
-    branches: [ main, master ]
+    branches: ["main"]
   pull_request:
-    branches: [ main, master ]
-  # Allow manual trigger from the Actions tab
-  workflow_dispatch:
+    branches: ["main"]
 
 jobs:
-  build-docs:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Create docs directory if it doesn't exist
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🥐 Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: 📦 Install dependencies
+        run: bun install
+
+      - name: 📂 Ensure docs directory exists
         run: mkdir -p docs
-      
-      - name: Build documentation
-        run: npm run npm:build
-      
-      - name: Commit and push if changes
+
+      - name: 🔨 Build project
+        run: bun run build
+
+      - name: 📝 Commit and push docs
+        if: github.event_name == 'push'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A docs/
           git diff --staged --quiet || (git commit -m "Update documentation" && git push)
+
+      - name: ✅ Run tests
+        run: bun test

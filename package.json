@@ -23,11 +23,7 @@
 	"scripts": {
 		"build": "cp ./src/index.html ./docs/ && bun run build:script && bun run tailwind:script",
 		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
-		"tailwind:script": "tailwindcss -i ./input.css -o ./docs/style.css  --minify",
-		"watch": "tailwindcss -i ./input.css -o ./docs/style.css --watch",
-
-		"npm:build": "cp ./src/index.html ./docs/ && npm run npm:build:script && npm run npm:tailwind:script",
-		"npm:build:script": "npx esbuild ./src/script.ts --bundle --outfile=docs/script.js --platform=browser",
-		"npm:tailwind:script": "npx tailwindcss -i ./input.css -o ./docs/style.css --minify"
+		"tailwind:script": "bunx tailwindcss -i ./input.css -o ./docs/style.css --minify",
+		"watch": "bunx tailwindcss -i ./input.css -o ./docs/style.css --watch"
 	}
 }
