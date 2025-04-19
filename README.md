@@ -28,6 +28,10 @@ Open `docs/index.html` in your browser.
 
 [GPFault&#39;s Perlin Sound Article](https://gpfault.net/posts/perlin-sound.txt.html)
 
+## Try it
+
+[Link](http://example.com)
+
 ## License
 
 [License](./LICENSE)
