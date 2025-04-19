@@ -17,7 +17,10 @@ jobs:
       - name: 🥐 Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: 📦 Install dependencies
+      - name: 🧹 Clean up old installs
+        run: rm -rf node_modules bun.lockb
+
+      - name: 📦 Install dependencies with Bun
         run: bun install
 
       - name: 📂 Ensure docs directory exists

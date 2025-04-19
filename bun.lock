@@ -3,17 +3,11 @@
   "workspaces": {
     "": {
       "name": "perlinoise",
-      "dependencies": {
+      "devDependencies": {
         "@iconify/json": "^2.2.329",
         "@iconify/tailwind4": "^1.0.6",
-        "daisyui": "^5.0.27",
-        "tailwindcss-animated": "^2.0.0",
-      },
-      "devDependencies": {
-        "@iconify/json": "^2.2.314",
-        "@iconify/tailwind4": "^1.0.6",
         "@types/bun": "latest",
-        "daisyui": "^5.0.0",
+        "daisyui": "^5.0.27",
         "tailwindcss": "4.1.4",
         "tailwindcss-animated": "2.0.0",
       },

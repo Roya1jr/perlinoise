@@ -5,21 +5,16 @@
 	"private": true,
 	"devDependencies": {
 		"@types/bun": "latest",
-		"@iconify/json": "^2.2.314",
+		"@iconify/json": "^2.2.329",
 		"@iconify/tailwind4": "^1.0.6",
-		"daisyui": "^5.0.0",
+		"daisyui": "^5.0.27",
 		"tailwindcss-animated": "2.0.0",
 		"tailwindcss": "4.1.4"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
 	},
-	"dependencies": {
-		"@iconify/json": "^2.2.329",
-		"@iconify/tailwind4": "^1.0.6",
-		"daisyui": "^5.0.27",
-		"tailwindcss-animated": "^2.0.0"
-	},
+	"dependencies": {},
 	"scripts": {
 		"build": "cp ./src/index.html ./docs/ && bun run build:script && bun run tailwind:script",
 		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
