@@ -4,12 +4,13 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
-		"@types/bun": "latest",
 		"@iconify/json": "^2.2.329",
 		"@iconify/tailwind4": "^1.0.6",
+		"@tailwindcss/cli": "^4.1.4",
+		"@types/bun": "latest",
 		"daisyui": "^5.0.27",
-		"tailwindcss-animated": "2.0.0",
-		"tailwindcss": "4.1.4"
+		"tailwindcss": "4.1.4",
+		"tailwindcss-animated": "2.0.0"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
@@ -18,7 +19,7 @@
 	"scripts": {
 		"build": "cp ./src/index.html ./docs/ && bun run build:script && bun run tailwind:script",
 		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
-		"tailwind:script": "bunx ./node_modules/.bin/tailwindcss -i ./input.css -o ./docs/style.css --minify",
+		"tailwind:script": "bunx @tailwindcss/cli -i ./input.css -o ./docs/style.css --minify",
 		"watch": "tailwindcss -i ./input.css -o ./docs/style.css --watch"
 	}
 }
