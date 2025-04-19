@@ -30,7 +30,7 @@ Open `docs/index.html` in your browser.
 
 ## Try it
 
-[Link](http://example.com)
+[Link](https://roya1jr.github.io/perlinoise/)
 
 ## License
 
