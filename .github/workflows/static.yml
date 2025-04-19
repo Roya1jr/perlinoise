@@ -31,6 +31,9 @@ jobs:
       
       - name: Install dependencies
         run: bun install
+
+      - name: Ensure docs directory exists
+        run: mkdir -p docs
       
       - name: Build project
         run: bun run build
