@@ -23,6 +23,9 @@ jobs:
       - name: 📦 Install dependencies with Bun
         run: bun install
 
+      - name: Install global dependencies
+        run: bun install -g tailwindcss
+
       - name: 📂 Ensure docs directory exists
         run: mkdir -p docs
 

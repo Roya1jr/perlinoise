@@ -18,7 +18,7 @@
 	"scripts": {
 		"build": "cp ./src/index.html ./docs/ && bun run build:script && bun run tailwind:script",
 		"build:script": "bun build ./src/script.ts --outfile docs/script.js",
-		"tailwind:script": "bunx tailwindcss -i ./input.css -o ./docs/style.css --minify",
-		"watch": "bunx tailwindcss -i ./input.css -o ./docs/style.css --watch"
+		"tailwind:script": "tailwindcss -i ./input.css -o ./docs/style.css --minify",
+		"watch": "tailwindcss -i ./input.css -o ./docs/style.css --watch"
 	}
 }
