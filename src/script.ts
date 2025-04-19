@@ -1,23 +1,120 @@
 //HTML
-const loadingSpinner = `<span class="icon-[svg-spinners--blocks-scale]></span>"`;
-const playingSpinner = `<span class="icon-[svg-spinners--bars-scale-middle] text-2xl"></span>`;
-const genButton = `<button id="generateButton" class="btn btn-outline btn-success"></button>`;
+const loadingSpinner = `<span class="icon-[svg-spinners--blocks-scale] text-2xl animate-flip-down"></span>`;
+const playingSpinner = `<span class="icon-[svg-spinners--bars-scale-middle] text-2xl animate-flip-down"></span>`;
+const genButton = `<button id="generateButton" class="btn btn-outline btn-success">Generate</button>`;
 
 //Elements
-const generateButton = document.getElementById("generateButton");
 const audioPlayer = document.getElementById("audioPlayer") as HTMLAudioElement;
-const localStorageKey = "generatedNoise";
 const buttonContainer = document.getElementById("buttonContainer");
 
-const OpenDataBase = () => {};
-
-const SaveAudioToIndexDB = async (blob: Blob) => {};
+//CONSTS
+const dbName = "AudioStorageDB";
+const storeName = "audios";
+const dbVersion = 1;
+const audioKey = "generatedNoise";
 
 const ShowLoading = (): void => {
 	if (buttonContainer !== null) {
 		buttonContainer.innerHTML = loadingSpinner;
 	} else {
 		console.log("Button Container Missing");
+	}
+};
+const ShowGenerateButton = (): void => {
+	if (buttonContainer !== null) {
+		buttonContainer.innerHTML = genButton;
+		const generateButton = document.getElementById("generateButton");
+		if (generateButton !== null) {
+			generateButton.addEventListener("click", GenerateNoise);
+		} else {
+			console.log("Button Container/Button Missing");
+		}
+	} else {
+		console.log("Button Container/Button Missing");
+	}
+};
+
+const OpenDataBase = async (): Promise<IDBDatabase> => {
+	return new Promise((resolve, reject) => {
+		const request = indexedDB.open(dbName, dbVersion);
+		request.onerror = () => reject("Error opening IndexedDB");
+		request.onsuccess = () => resolve(request.result);
+		request.onupgradeneeded = (event) => {
+			if (event.target !== null) {
+				const db = (event.target as IDBOpenDBRequest).result as IDBDatabase;
+				if (!db.objectStoreNames.contains(storeName)) {
+					db.createObjectStore(storeName);
+				}
+			}
+		};
+	});
+};
+
+const SaveAudioToIndexDB = async (blob: Blob) => {
+	return OpenDataBase().then((db) => {
+		return new Promise<void>((resolve, reject) => {
+			const tx = db.transaction(storeName, "readwrite");
+			const store = tx.objectStore(storeName);
+			const request = store.put(blob, audioKey);
+			request.onsuccess = () => resolve();
+			request.onerror = () => reject("Failed to store audio blob");
+		});
+	});
+};
+
+const LoadAudioFromIndexedDB = async (): Promise<Blob | undefined> => {
+	const db = await OpenDataBase();
+	return new Promise<Blob | undefined>((resolve, reject) => {
+		const tx = db.transaction(storeName, "readonly");
+		const store = tx.objectStore(storeName);
+		const request = store.get(audioKey);
+		request.onsuccess = () => {
+			const result = request.result;
+			if (result instanceof Blob) {
+				resolve(result);
+			} else {
+				resolve(undefined);
+			}
+		};
+		request.onerror = () => reject("Failed to store audio blob");
+	});
+};
+
+const LoadAudioFromStorage = async () => {
+	ShowLoading();
+	try {
+		const blob = await LoadAudioFromIndexedDB();
+		console.log(typeof blob);
+		if (blob) {
+			console.log(typeof blob);
+			const url = URL.createObjectURL(blob as Blob);
+			if (audioPlayer && buttonContainer) {
+				audioPlayer.src = url;
+				audioPlayer.loop = true;
+				audioPlayer.oncanplaythrough = () => {
+					if (buttonContainer !== null) {
+						buttonContainer.innerHTML = playingSpinner;
+					}
+					audioPlayer.oncanplaythrough = null;
+				};
+				audioPlayer.onerror = () => {
+					console.warn("Stored audio is invalid or inaccessible");
+					ShowGenerateButton();
+					audioPlayer.onerror = null;
+				};
+
+				audioPlayer.play().catch((err) => {
+					console.warn("Autoplay blocked. User must interact first.", err);
+				});
+			} else {
+				ShowGenerateButton();
+			}
+		} else {
+			ShowGenerateButton();
+		}
+	} catch (err) {
+		console.error("Error loading audio: ", err);
+		ShowGenerateButton();
 	}
 };
 
@@ -32,7 +129,7 @@ const WriteString = (
 };
 
 const CreateWave = async (
-	audio_data: Float32Array<ArrayBuffer>,
+	audio_data: Float32Array,
 	sample_rate: number,
 ): Promise<ArrayBuffer> => {
 	const num_channels = 1;
@@ -68,9 +165,8 @@ const CreateWave = async (
 	return buffer;
 };
 
-//! Todo
 const FinishAudioGen = async (
-	audio_data: Float32Array<ArrayBuffer>,
+	audio_data: Float32Array,
 	sample_rate: number,
 ) => {
 	try {
@@ -159,11 +255,4 @@ const GenerateNoise = async (): Promise<void> => {
 	}
 };
 
-const ShowGenerateButton = (): void => {
-	if (buttonContainer !== null && generateButton !== null) {
-		buttonContainer.innerHTML = genButton;
-		generateButton.addEventListener("click", GenerateNoise);
-	} else {
-		console.log("Button Container/Button Missing");
-	}
-};
+window.addEventListener("load", LoadAudioFromStorage);
