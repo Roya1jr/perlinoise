@@ -75,9 +75,7 @@ var LoadAudioFromStorage = async () => {
   ShowLoading();
   try {
     const blob = await LoadAudioFromIndexedDB();
-    console.log(typeof blob);
     if (blob) {
-      console.log(typeof blob);
       const url = URL.createObjectURL(blob);
       if (audioPlayer && buttonContainer) {
         audioPlayer.src = url;
