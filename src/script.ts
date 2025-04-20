@@ -6,6 +6,7 @@ const genButton = `<button id="generateButton" class="btn btn-outline btn-succes
 //Elements
 const audioPlayer = document.getElementById("audioPlayer") as HTMLAudioElement;
 const buttonContainer = document.getElementById("buttonContainer");
+const audioContainer = document.getElementById("audio-container");
 
 //CONSTS
 const dbName = "AudioStorageDB";
@@ -253,4 +254,24 @@ const GenerateNoise = async (): Promise<void> => {
 	}
 };
 
+const IsSafari = (): boolean => {
+	const ua = navigator.userAgent.toLowerCase();
+	return (
+		ua.includes("safari") && !ua.includes("chrome") && !ua.includes("android")
+	);
+};
+
+const SafariRotationFix = (): void => {
+	if (audioContainer) {
+		if (IsSafari()) {
+			audioContainer.classList.remove("-rotate-10");
+			audioContainer.classList.add("safari-audio-fix");
+		}
+	} else {
+		console.log("Audio container not found, retrying...");
+		setTimeout(SafariRotationFix, 100);
+	}
+};
+
+document.addEventListener("DOMContentLoaded", SafariRotationFix);
 window.addEventListener("load", LoadAudioFromStorage);
